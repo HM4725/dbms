@@ -12,7 +12,7 @@ bool DiskManager::__fileExists(const std::string &path) {
 };
 
 int DiskManager::__openExistingDatabaseFile(const std::string &path) {
-  int fd = open(path.c_str(), O_RDWR);
+  int fd = open(path.c_str(), O_RDWR | O_SYNC);
   if (fd < 0) return fd;
 
   Page pg;
@@ -28,14 +28,13 @@ int DiskManager::__openExistingDatabaseFile(const std::string &path) {
 }
 
 int DiskManager::__createDatabaseFile(const std::string &path) {
-  int fd = open(path.c_str(), O_RDWR | O_CREAT, 0644);
+  int fd = open(path.c_str(), O_RDWR | O_CREAT | O_SYNC, 0644);
   if (fd < 0) return fd;
 
   if (ftruncate(fd, INITIAL_PAGES_NUMBER * PAGE_SIZE) < 0) {
     close(fd);
     return F_TRUNCATEFAIL;
   }
-  fsync(fd);
 
   Page pg;
 
@@ -116,7 +115,6 @@ pagenum_t DiskManager::allocPage(int fd) {
     if (ftruncate(fd, new_number_of_pages * PAGE_SIZE) < 0) {
       return PN_INVALID;
     }
-    fsync(fd);
 
     for (pagenum_t i = old_number_of_pages; i < new_number_of_pages - 1; i++) {
       pfpg->next_free_page_number = i + 1;
@@ -186,5 +184,4 @@ void DiskManager::readPage(int fd, pagenum_t page_number, Page *dest) {
  */
 void DiskManager::writePage(int fd, pagenum_t page_number, const Page *src) {
   pwrite(fd, src->data, PAGE_SIZE, page_number * PAGE_SIZE);
-  fsync(fd);
 }
