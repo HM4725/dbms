@@ -144,7 +144,7 @@ TEST_F(BufferTest, stressTest) {
   }
 }
 
-TEST_F(BufferTest, durabilityTest) {
+TEST_F(BufferTest, restartTest) {
   const int nepoch = 1000;
 
   /*

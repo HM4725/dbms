@@ -28,8 +28,8 @@ class FileTest : public testing::Test {
   static int          fd;
 };
 
-PageManager* FileTest::dmgr = nullptr;
-const char*  FileTest::path = "test.db";
+PageManager *FileTest::dmgr = nullptr;
+const char  *FileTest::path = "test.db";
 int          FileTest::fd   = -1;
 
 TEST_F(FileTest, fileOpenDatabase) {
@@ -127,7 +127,7 @@ TEST_F(FileTest, stressTest) {
   {
     Page pg;
 
-    for(int i = 1; i <= nepoch; i++) {
+    for (int i = 1; i <= nepoch; i++) {
       pagenum_t page_number = static_cast<pagenum_t>(i);
       dmgr->readPage(fd, page_number, &pg);
       dmgr->freePage(fd, page_number);
@@ -137,7 +137,7 @@ TEST_F(FileTest, stressTest) {
   }
 }
 
-TEST_F(FileTest, durabilityTest) {
+TEST_F(FileTest, restartTest) {
   const int nepoch = 1000;
 
   /*
@@ -170,7 +170,7 @@ TEST_F(FileTest, durabilityTest) {
   {
     Page pg;
 
-    for(int i = 1; i <= nepoch; i++) {
+    for (int i = 1; i <= nepoch; i++) {
       pagenum_t page_number = static_cast<pagenum_t>(i);
       dmgr->readPage(fd, page_number, &pg);
       dmgr->freePage(fd, page_number);
