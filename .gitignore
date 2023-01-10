@@ -5,3 +5,6 @@
 build/
 debug/
 release/
+
+# Macos
+.DS_Store
