@@ -1,5 +1,6 @@
 #include <cassert>
 #include <cinttypes>
+#include <cstring>
 #include <iostream>
 #include <unistd.h>
 #include "file.h"

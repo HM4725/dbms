@@ -4,6 +4,7 @@
 #include "file.h"
 #include "optimize.h"
 #include "page.h"
+#include <cstring>
 
 BufferManager::BufferedPage::BufferedPage()
     : table_id(TID_INVALID),
